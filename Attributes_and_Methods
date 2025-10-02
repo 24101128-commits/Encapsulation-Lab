@@ -1,0 +1,165 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMGM7tWy9AgwPYhwMnfx8nI",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/24101128-commits/Encapsulation-Lab/blob/main/Attributes_and_Methods\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 5,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_51WbW-L7azq",
+        "outputId": "c3b432f6-efcd-4c05-b127-4a8e4dc5568c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "First store of type Fruit and Veg with capacity 20\n",
+            "Second store of type Clothes with capacity 250\n",
+            "potato added to the store\n",
+            "jeans added to the store\n",
+            "Not enough tomatoes in the store\n",
+            "1 jeans removed from the store\n"
+          ]
+        }
+      ],
+      "source": [
+        "class Store:\n",
+        "    def __init__(self, name: str, type: str, capacity: int):\n",
+        "        self.name = name\n",
+        "        self.type = type\n",
+        "        self.capacity = capacity\n",
+        "        self.items = {}\n",
+        "\n",
+        "    @classmethod\n",
+        "    def from_size(cls, name: str, type: str, size: int):\n",
+        "        return cls(name, type, size // 2)\n",
+        "\n",
+        "    def add_item(self, item_name: str):\n",
+        "        total_items = sum(self.items.values())\n",
+        "        if total_items < self.capacity:\n",
+        "            self.items[item_name] = self.items.get(item_name, 0) + 1\n",
+        "            return f\"{item_name} added to the store\"\n",
+        "        return \"Not enough capacity in the store\"\n",
+        "\n",
+        "    def remove_item(self, item_name: str, amount: int):\n",
+        "        if self.items.get(item_name, 0) >= amount:\n",
+        "            self.items[item_name] -= amount\n",
+        "            if self.items[item_name] == 0:\n",
+        "                del self.items[item_name]\n",
+        "            return f\"{amount} {item_name} removed from the store\"\n",
+        "        return f\"Not enough {item_name} in the store\"\n",
+        "\n",
+        "    def __repr__(self):\n",
+        "        return f\"{self.name} of type {self.type} with capacity {self.capacity}\"\n",
+        "\n",
+        "first_store = Store(\"First store\", \"Fruit and Veg\", 20)\n",
+        "second_store = Store.from_size(\"Second store\", \"Clothes\", 500)\n",
+        "print(first_store)\n",
+        "print(second_store)\n",
+        "print(first_store.add_item(\"potato\"))\n",
+        "print(second_store.add_item(\"jeans\"))\n",
+        "print(first_store.remove_item(\"tomatoes\", 1))\n",
+        "print(second_store.remove_item(\"jeans\", 1))"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import math\n",
+        "\n",
+        "class Integer:\n",
+        "    def __init__(self, value: int):\n",
+        "        self.value = value\n",
+        "\n",
+        "    @classmethod\n",
+        "    def from_float(cls, value):\n",
+        "        if isinstance(value, float):\n",
+        "            return cls(math.floor(value))\n",
+        "        return \"value is not a float\"\n",
+        "\n",
+        "    @classmethod\n",
+        "    def from_roman(cls, value: str):\n",
+        "        roman_map = {\n",
+        "            \"I\": 1, \"V\": 5, \"X\": 10,}\n",
+        "        total = 0\n",
+        "        prev = 0\n",
+        "        for char in reversed(value):\n",
+        "            num = roman_map[char]\n",
+        "            if num < prev:\n",
+        "                total -= num\n",
+        "\n",
+        "            else:\n",
+        "                total += num\n",
+        "            prev = num\n",
+        "        return cls(total)\n",
+        "\n",
+        "    @classmethod\n",
+        "    def from_string(cls, value):\n",
+        "        try:\n",
+        "            if isinstance(value, str) and value.isdigit():\n",
+        "                return cls(int(value))\n",
+        "            return \"wrong type\"\n",
+        "        except:\n",
+        "            return \"wrong type\"\n",
+        "\n",
+        "    def add(self, integer):\n",
+        "        if isinstance(integer, Integer):\n",
+        "            return self.value + integer.value\n",
+        "        return \"number should be an Integer instance\"\n",
+        "\n",
+        "first_num = Integer(10)\n",
+        "second_num = Integer.from_roman(\"IV\")\n",
+        "print(Integer.from_float(\"hello\"))\n",
+        "print(Integer.from_string(\"2.6\"))\n",
+        "print(first_num.add(second_num))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JJ0FwVkr9lXn",
+        "outputId": "d97a7a22-9adc-4d43-cf0c-7f00412f855f"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "value is not a float\n",
+            "wrong type\n",
+            "14\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
